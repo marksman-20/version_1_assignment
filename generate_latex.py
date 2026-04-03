@@ -57,7 +57,7 @@ latex_content = r"""\documentclass[11pt, a4paper]{article}
 The R scripts written and executed for all numerical problems and simulations in this report are available at the following repository/folder:
 
 \begin{center}
-\Large\textbf{\url{https://github.com/manaspokley/Statistical-Solutions}}
+\Large\textbf{\url{https://github.com/marksman-20/version_1_assignment}}
 \end{center}
 \textit{(Note: Please ensure this link is updated to your actual GitHub or Google Drive link prior to submission.)}
 
