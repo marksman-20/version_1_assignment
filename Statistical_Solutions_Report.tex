@@ -66,8 +66,6 @@ The R scripts written and executed for all numerical problems and simulations in
 \section{Module 1: Estimation}
 
 \subsection{Problem 4.33: Comparing Estimators for the Normal Distribution}
-\textbf{Problem Statement:} Randomly generate 100 observations from a standard normal distribution. Find the sample mean and the sample median. Repeat this 100,000 times. Plot the sampling distributions of the sample mean and the sample median. Which estimator is better, and why?
-
 \textbf{Solution:}
 We used R to simulate 100,000 samples, each of size $n=100$, from the Standard Normal Distribution $\mathcal{N}(0, 1)$. For each sample, we computed both the sample mean and the sample median.
 
@@ -94,8 +92,6 @@ The simulated MSE values computed from R are:
 \textbf{Conclusion:} The \textbf{sample mean} is the better estimator for the center of a normal distribution because it has a lower Mean Squared Error (lower variance). The sample mean utilizes all the information in the sample efficiently, whereas the median relies mostly on the middle values, leading to higher variability.
 
 \subsection{Problem 4.34: Comparing Estimators for the Uniform Distribution}
-\textbf{Problem Statement:} Do the same as above but generating observations from a uniform distribution over $(0,1)$. Which estimator is better for this distribution, and why?
-
 \textbf{Solution:}
 We used R to simulate 100,000 samples, each of size $n=100$, from the Uniform Distribution $\mathcal{U}(0, 1)$. The true mean is $0.5$ and the true median is $0.5$.
 
@@ -115,8 +111,6 @@ The simulated MSE values computed from R are:
 
 \newpage
 \subsection{Problem 4.36: Bias-Variance Tradeoff for Variance Estimators}
-\textbf{Problem Statement:} For a random sample from $\mathcal{N}(\mu, \sigma^2)$, let $S^2 = \sum(Y_i - \bar{Y})^2 / (n-1)$. Show that the biased estimator $\hat{\sigma}^2 = \sum(Y_i - \bar{Y})^2 / n$ has a smaller MSE than $S^2$.
-
 \textbf{Proof:}
 We know that $\frac{(n-1)S^2}{\sigma^2} \sim \chi^2_{n-1}$.
 For a Chi-squared distribution with $k$ degrees of freedom, the mean is $k$ and the variance is $2k$. Therefore:
@@ -145,11 +139,6 @@ Therefore, the biased estimator $\hat{\sigma}^2$ has a strictly smaller MSE than
 
 \newpage
 \subsection{Problem 4.39: Maximum Likelihood for Exponential Distribution}
-\textbf{Problem Statement:} For independent observations $y_1, y_2, \dots, y_n$ from an exponential distribution with parameter $\lambda > 0$, the probability density function is $f(y; \lambda) = \lambda e^{-\lambda y}$ for $y > 0$.
-(a) Analytically express the log-likelihood $L(\lambda)$, its derivative, and find the ML estimate $\hat{\lambda}$.\\
-(b) Find the Fisher Information $I(\lambda)$ and the approximate large-sample standard error of $\hat{\lambda}$.\\
-(c) Plot the difference $L(\lambda) - L(\hat{\lambda})$ for $\bar{y} = 10$, $\lambda \in (0.01, 4.0)$ under various sample sizes $n$.
-
 \textbf{Solution:}
 \textbf{Part (a): Log-likelihood and ML estimate}
 Given $f(y; \lambda) = \lambda e^{-\lambda y}$, the likelihood function for a sample of size $n$ is:
@@ -192,11 +181,6 @@ The vertical line marks the true estimate $\hat{\lambda}=0.1$. As $n$ increases,
 \section{Module 2: Confidence Intervals}
 
 \subsection{Problem 4.12: Comparing Group Means}
-\textbf{Problem Statement:} The \texttt{Income.dat} file displays U.S. annual incomes by racial-ethnic groups.
-(a) Side-by-side boxplot to compare incomes.
-(b) Construct and interpret a 90\% CI for the difference between the population mean incomes of Blacks and Whites, assuming equal population variances.
-(c) Construct without the equal variance assumption, and compare results.
-
 \textbf{Solution:}
 Using R, we extracted the `income` and `race` variables into an appropriate structure.
 \textbf{(a) Boxplot Comparison:}
@@ -219,8 +203,6 @@ Comparison: The interval without the equal-variance assumption is considerably n
 
 \newpage
 \subsection{Problem 4.16: Comparing Proportions using Wald CI}
-\textbf{Problem Statement:} Using the \texttt{Substance.dat} categorical dataset, construct a 95\% Wald Confidence Interval to compare those who have used or not used alcohol on whether they have used marijuana. Use formula 4.13 manually and compare with software output.
-
 \textbf{Solution:}
 We cross-categorize Marijuana usage as the outcome/response and Alcohol usage as the group.
 \begin{itemize}
@@ -247,8 +229,6 @@ $0.4488310, 0.5005777$
 The formula exactly aligns with strictly uncorrected statistical software. We are 95\% confident that the true population difference in marijuana usage proportion between teenagers who drink alcohol versus those who do not lies between 44.88\% and 50.06\%. Since the interval heavily isolates itself far above 0, alcohol consumption is powerfully associated with an intensely increased likelihood of marijuana usage. Assumptions made involve asserting large enough sample sizes ($np, n(1-p) > 10$), and independence between groups.
 
 \subsection{Problem 4.17: Non-Normality of t-distribution}
-\textbf{Problem Statement:} Randomly generate 10,000 observations from a t-distribution $df=3$. Construct a normal quantile plot. How does it reveal non-normality differently than a histogram does?
-
 \textbf{Solution:}
 Using `rt()` in R, we derived the specified 10,000 observations and formed a histogram next to a QQ-plot.
 
@@ -263,11 +243,6 @@ Contrarily, the Normal Quantile (QQ) plot demonstrates deviations explicitly. If
 
 \newpage
 \subsection{Problem 4.45: Confidence Interval under Multinomial Distribution}
-\textbf{Problem Statement:} The Hardy-Weinberg formula asserts that probabilties of genotypes (AA, Aa, aa) are $(\pi^2, 2\pi(1-\pi), (1-\pi)^2)$. Assume a multinomial distribution for counts $(y_1, y_2, y_3)$.
-(a) Log-likelihood function and ML estimate of $\pi$.
-(b) Approximate standard error using $I(\pi)$.
-(c) Construction of 95\% confidence interval.
-
 \textbf{Solution:}
 \textbf{Part (a)}:
 Given probabilities $\pi_1 = \pi^2, \pi_2 = 2\pi(1-\pi), \pi_3 = (1-\pi)^2$ and sum of counts $n = y_1 + y_2 + y_3$.
@@ -298,36 +273,31 @@ $$SE(\hat{\pi}) \approx \frac{1}{\sqrt{I_n(\hat{\pi})}} = \sqrt{\frac{\hat{\pi}(
 Assuming large enough $n$, MLE distributions normally approximate. Thus, a (Wald-type) 95\% confidence interval leverages $Z \approx 1.96$:
 $$CI_{95\%} = \hat{\pi} \pm 1.96 \times SE(\hat{\pi}) = \hat{\pi} \pm 1.96 \sqrt{\frac{\hat{\pi}(1-\hat{\pi})}{2n}}$$
 
-\subsection{Problem 4.50: Simulation of Confidence Intervals ($\pi=0.06, n=20$)}
-\textbf{Problem Statement:}
-Take $\pi=0.06$ and $n=20$. We analyze Wald vs. Wilson constraints.
-
+\subsection{Problem 4.50: Simulation of Confidence Intervals ($p=0.06, n=20$)}
 \textbf{Solution:}
-Using R, we simulate $Bin(20, 0.06)$. 
 
-\textbf{(a) Wald CI Execution}
-The Wald Confidence interval assumes approximate Gaussian behaviors: $\hat{p} \pm z\sqrt{\hat{p}(1-\hat{p})/n}$.
-Generating consecutive tens:
-- In the first 10 sample runs of $n=20$, $\sim8$ contained $0.06$. We theoretically expect $0.95 \times 10 \approx 9.5$.
-- Simulating thoroughly with $1000$ iterations, only \textbf{70.5\%} accurately encapsulated $0.06$. This is incredibly sparse and signifies absolute failure of the Wald bounding system with rare parameters and meager sizes.
-
-\textbf{(b) Sampling Distribution of $\hat{p}$}
+a) n = 20 and 10 samples for p = 0.06
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{CI_prob5_phat_dist.pdf}
-    \caption{Sampling Distribution of $\hat{p}$ evaluating failures in symmetry.}
+    \includegraphics[width=0.8\textwidth]{img-072.png}
+    \caption{Coverage simulation for n=20, p=0.06, 10 samples}
 \end{figure}
-The probability peaks entirely near $0$ or just past $0$. A bell-shape is strictly absent, rendering standard normal assumptions of symmetric density critically invalid for small $\pi$ scenarios.
+We expect the coverage to be atleast 95\% but here it's only 75\%.
+Even then we draw 1000 samples the coverage is not 95\%. Only 71\% contains pi = 0.06.
+This is because when n is small the normal approximation fails. For binomial to be treated as normal n should be large.
 
-\textbf{(c) Pathological Zero Bounds Analysis}
-When $y = 0 \implies \hat{p} = 0$, leading the standard error $\sqrt{\hat{p}(1-\hat{p})/n}$ natively matching identically to zero.
-Consequently, $CI = (0, 0)$. As actual probability parameters border $0$, drawing zero success events approaches $1$. When interval sets fall perfectly isolated to exactly numeric zero, they explicitly exclude any actual $\pi > 0$, destroying the interval accuracy coverage mechanism organically. 
+b) when n = 20 drawing 10,000 samples gives the sampling distribution as below
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img-073.png}
+    \caption{Sampling distribution for n=20, 10,000 samples}
+\end{figure}
+The sampling distribution is bell shaped and symmetric. Here the Wald confidence interval performs poorly because n is small and the distribution is highly discrete and thus cannot be approximated to normal which is continuous if we increase the value of n, the sampling distribution kinda becomes continuous.
 
-\textbf{(d) Wilson Score Optimization}
-When we test the same $1000$ sample frames evaluating $n=20$ applying Wilson score modifications via statistical test properties (e.g. implicitly incorporating $\approx 2$ extra artificial successes):
-Percentage of intervals covering $\pi = 0.06$: \textbf{$\approx 97.1\%$}
+c) Wald confidence interval is given by putting $y$ as 0 we get the CI as $(0,0)$. As $p$ approaches 0 it means that the number of successes $X$ will also approach zero. therefore $\hat{p}$ which is $X/n$ will be approaching 0 with probability 1 and thus the actual probability that the Wald interval contains $p$ approaches 0 because the CI becomes $(0,0)$ and Since this interval never contains a positive $p$, the probability of the interval containing the true value drops to zero.
 
-The Wilson interval profoundly restores confidence mechanics and accuracy interpretation, yielding reliable 95\% statistical security, compared to Wald's unhinged and highly degraded performance under constrained settings.
+d) using Wilson's score interval we see that the coverage is 97.5\% for 95\% CI. It supports our interpretation of CI 95\% that is if we draw 1000 samples and we get 1000 values of CI's, our true parameter will lie in at least 950 of the intervals.
+
 
 \newpage
 % =====================================================
@@ -336,10 +306,6 @@ The Wilson interval profoundly restores confidence mechanics and accuracy interp
 \section{Module 3: Bayesian Inference}
 
 \subsection{Problem 4.64: Bias-Variance Tradeoff (Bayes vs ML Estimator)}
-\textbf{Problem Statement:} For a binomial parameter $\pi$, consider the Bayesian estimator $\tilde{\pi} = (Y+1)/(n+2)$ derived from a uniform prior.
-(a) Derive bias and variance. Compare with ML estimator $Y/n$.
-(b) Show MSE function. Plot comparison for $n=10$ and $n=1000$, and describe shrinkage.
-
 \textbf{Solution:}
 \textbf{Part (a):}
 For the Bayesian estimator: 
@@ -365,8 +331,6 @@ $$MSE(\tilde{\pi}) = \text{Bias}^2 + \text{Var} = \left(\frac{1-2\pi}{n+2}\right
 The plots explicitly showcase that for $n=10$, the Bayes MSE rests smaller than the ML MSE primarily structurally toward the center ($\pi \approx 0.5$) where maximum likelihood estimators inherently encounter extreme high variances natively. The Bayesian uniform prior structurally pulls (shrinks) estimators directly towards $1/2$, essentially trading injected biases against peak central variances. For $n=1000$, the sample completely overwhelms the prior, making both MSEs essentially identical.
 
 \subsection{Problem 4.66: Anorexia Study and Bayesian Shrinkage}
-\textbf{Problem Statement:} Researcher uses estimator $\tilde{\mu} = c\bar{Y}$ for a standard sample mean, modifying it artificially towards $0$ where $0 \le c \le 1$. Suppose $\mu=\sigma=n=1$. Find and plot analytical curves finding optimally tuned parameters minimizing MSE.
-
 \textbf{Solution:}
 For $\tilde{\mu} = c\bar{Y}$:
 $E[\tilde{\mu}] = c\mu$, meaning absolute $\text{Bias} = |c\mu - \mu| = \mu(1-c)$. As $c \to 0$, structural biases actively expand to bounds of full parameters $\mu$.
@@ -390,8 +354,6 @@ In a Bayesian framework, utilizing Normal-Normal conjugacy equations translates 
 
 \newpage
 \subsection{Problem 4.77: Order Statistics and Medians}
-\textbf{Problem Statement:} For continuous distributions, derive sequence behaviors for medians conforming to binomial principles. Show approximate boundaries forming confidence structures relying on central order distributions. 
-
 \textbf{Solution:}
 By definition, the population median $M$ is the precisely divided $50^{th}$ percentile mark of continuous distribution probability density spaces. Ergo, for any independently drawn numeric variable scalar event $Y_i$,
 $P(Y_i < M) \equiv 0.50$.
@@ -409,8 +371,6 @@ $$b \approx \frac{n}{2} + 1.96 \left(\frac{\sqrt{n}}{2}\right)$$
 This fundamentally creates probability boundary confidence layers intrinsically without assuming strict underlying parameterized frameworks!
 
 \subsection{Problem 4.78: Dirichlet Conjugacy in Multinomial Methods}
-\textbf{Problem Statement:} Dirichlet distributions uniformly forming conjugated sequences parsing multinomial framework categories. Find uniform hyperparameters mapping values parsing proportions identically to sample observations incrementing variables.
-
 \textbf{Solution:}
 \textbf{(a) Uniform Simplex Definition:} Let $f(\pi) \propto \prod_{j=1}^c \pi_j^{\alpha_j - 1}$. For identical uniform density spanning non-biased metric systems, components mapping exponent terms exclusively equal $0$. Consequently mapping parameter bounds establishes uniform configurations specifically leveraging parameter limits explicitly setting $\alpha_j = 1$ rigidly globally.
 \textbf{(b) Conjugacy Mechanism:} 
@@ -431,8 +391,6 @@ When explicitly forcing configurations evaluating strictly structured mapped set
 \section{Module 4: Linear Models}
 
 \subsection{Problem 6.1: Scottish Hill Races Data Analysis}
-\textbf{Problem Statement:} Model regressions utilizing scalar mappings defining predicting sequences configuring Men's bounds tracking explicitly identically to configurations parsing Women's temporal track elements.
-
 \textbf{Solution:}
 \textbf{(a) Scatterplot and Predictive Sequences:}
 We extract explicitly metric structures from \texttt{ScotsRaces.dat} establishing sequential prediction arrays.
@@ -456,8 +414,6 @@ Resulting calculated slope sequence equals approximately evaluating implicitly r
 Interpretation identically parses quantitatively evaluating structurally suggesting Men mathematically function systematically executing elements tracking quantitatively fundamentally $\approx 85\%$ total fraction mapping duration timelines compared functionally exactly identically evaluated equivalent variables identifying structurally metrics measuring women's bounds.
 
 \subsection{Problem 6.3: Diagnostics Identifying Influential Datasets}
-\textbf{Problem Statement:} \texttt{Firearms2} dataset arrays plotting percentages interacting with death metrics. Expose influential data vectors changing relationships fundamentally.
-
 \textbf{Solution:}
 Linear model diagnostics explicitly compute quantitative matrices finding deviations maximizing internally measured Cook's Distance measurements.
 \begin{figure}[H]
@@ -472,8 +428,6 @@ Effect dynamically altering measured tracking correlations quantitatively identi
 The observation structurally inherently heavily dragged configurations globally distorting regressions globally structurally functionally suppressing underlying positive trajectory patterns explicitly significantly mathematically.
 
 \subsection{Problem 6.5: Exponential Parameterization using Corona Virus Records}
-\textbf{Problem Statement:} Assess exponential growth structures converting metric paths utilizing logarithm arrays tracking \texttt{Covid-19} database values tracking daily escalations natively returning quantitative predictive equations parsing parameters.
-
 \textbf{Solution:}
 Logarithmical transformations natively straighten exponentially bounding mappings establishing inherently functional linear arrays parsing equivalent mapping tracking regression values naturally parsing easily evaluated mathematical algorithms optimally parsing structures.
 
@@ -493,8 +447,6 @@ Under logarithmic frameworks, properties intrinsic strictly state explicitly var
 Interpretation confirms equivalently structurally meaning predicted parameter bounding paths multiplicatively natively functionally expand daily structures actively mathematically exactly explicitly $36\%$ every tracked individual sequential cycle intrinsically validating exclusively.
 
 \subsection{Problem 6.24: Quantifying High-Leverage Outliers and Disruption Properties}
-\textbf{Problem Statement:} Construct mapping subsets maintaining explicitly high scalar values plotting points mapping identically $+1$. Add disrupting entities artificially returning heavily scaling inversions explicitly extracting properties modifying parameters identifying correlation limits.
-
 \textbf{Solution:}
 Simulating elements checking $x \in (1,2,3,4,5)$, returning positive metrics evaluating equivalently to $r \approx 0.997$.
 Appending explicitly highly mapped isolated variables $(15, -10)$ radically restructures bounds measuring strictly globally limits shifting natively intrinsically identical evaluating mapping perfectly returned properties evaluating to strong explicitly limits bounding fundamentally returning $\mathbf{-0.856}$.
@@ -504,9 +456,18 @@ Appending explicitly highly mapped isolated variables $(15, -10)$ radically rest
 \end{figure}
 This demonstrates inherently quantitative boundaries maximizing elements functionally validating outlier scaling principles natively establishing values existing mapping heavily physically exclusively fundamentally extracting maximum numerical offsets (leverage bounds interacting with heavily inverted residual patterns) disrupting completely linear arrays natively explicitly modifying identical models severely negatively disrupting patterns globally strictly identifying robust properties scaling linearly bounding. 
 
-\subsection{Problem 6.30: Invariance of Correlation Across Linear Scalars}
-\textbf{Problem Statement:} Show transformations functionally scalar limits maintaining properties identical inherently measuring correlation structures intrinsically measuring independence. 
+\subsection{Problem 6.25: Interactive Correlation Guessing}
+\textbf{Solution:}
 
+Q)6.25
+The correlation obtained is 0.9781 (i am a good guesser :) )
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img-006.png}
+\end{figure}
+
+\subsection{Problem 6.30: Invariance of Correlation Across Linear Scalars}
 \textbf{Solution:}
 Let regression vectors quantitatively mapping limits scale values scaling variable frameworks intrinsically transforming $y_{new} = {cy}$. 
 Variances shift dynamically scaling structures identical extracting mathematical quadratic forms: $s_{new} = \sqrt{c^2 s_y^2} = |c| s_y$.
