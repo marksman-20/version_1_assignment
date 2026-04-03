@@ -52,7 +52,7 @@
 \newpage
 
 \section*{Code Repository Link}
-The R scripts written and executed for all numerical problems and simulations in this report are available at the following repository/folder:
+The R scripts used for all numerical problems and simulations in this report are available at:
 
 \begin{center}
 \Large\textbf{\url{https://github.com/marksman-20/version_1_assignment}}
@@ -67,112 +67,88 @@ The R scripts written and executed for all numerical problems and simulations in
 
 \subsection{Problem 4.33: Comparing Estimators for the Normal Distribution}
 \textbf{Solution:}
-We used R to simulate 100,000 samples, each of size $n=100$, from the Standard Normal Distribution $\mathcal{N}(0, 1)$. For each sample, we computed both the sample mean and the sample median.
+I ran a simulation in R drawing 100,000 samples of size $n=100$ each from $\mathcal{N}(0,1)$, computing the sample mean and sample median for each. Since the true mean and median are both 0, and both estimators are unbiased, the MSE equals the variance.
 
-The mean of the true distribution is 0, and the median is also 0. An estimator is considered "better" if it exhibits a lower Mean Squared Error (MSE), which represents the expected value of the squared difference between the estimator and the true parameter.
-$$MSE(\hat{\theta}) = E[(\hat{\theta} - \theta)^2] = \text{Bias}(\hat{\theta})^2 + \text{Var}(\hat{\theta})$$
-Since both estimators are unbiased for $\mathcal{N}(0,1)$, the MSE is exactly their variance.
-
-The analytical variances are:
-- Variance of the Sample Mean: $\sigma^2 / n = 1 / 100 = 0.01$
-- Asymptotic Variance of the Sample Median: $\approx \frac{\pi}{2} \cdot \frac{\sigma^2}{n} \approx 1.57 \times 0.01 = 0.0157$
+Theoretically:
+\begin{itemize}
+    \item Variance of sample mean: $\sigma^2/n = 1/100 = 0.01$
+    \item Asymptotic variance of sample median: $\approx \frac{\pi}{2} \cdot \frac{1}{100} \approx 0.0157$
+\end{itemize}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{Estimation_prob1_plot.pdf}
-    \caption{Sampling Distributions of the Sample Mean and Sample Median for $N(0,1)$}
+    \caption{Sampling distributions of the sample mean and sample median for $N(0,1)$}
 \end{figure}
 
-The simulated MSE values computed from R are:
+Simulated MSE from R:
 \begin{itemize}
-    \item \textbf{MSE of Sample Mean:} $\approx 0.01004$
-    \item \textbf{MSE of Sample Median:} $\approx 0.01557$
+    \item \textbf{MSE of sample mean:} $\approx 0.01004$
+    \item \textbf{MSE of sample median:} $\approx 0.01557$
 \end{itemize}
 
-\textbf{Conclusion:} The \textbf{sample mean} is the better estimator for the center of a normal distribution because it has a lower Mean Squared Error (lower variance). The sample mean utilizes all the information in the sample efficiently, whereas the median relies mostly on the middle values, leading to higher variability.
+The sample mean is the better estimator here. Since it uses all the data equally rather than just the middle values, it is more efficient for a symmetric distribution like the normal.
 
 \subsection{Problem 4.34: Comparing Estimators for the Uniform Distribution}
 \textbf{Solution:}
-We used R to simulate 100,000 samples, each of size $n=100$, from the Uniform Distribution $\mathcal{U}(0, 1)$. The true mean is $0.5$ and the true median is $0.5$.
+Again using R, I drew 100,000 samples of size $n=100$ from $\mathcal{U}(0,1)$. Both the mean and median of this distribution equal 0.5.
 
-As with the previous question, we gauge the performance of the sample mean versus the sample median using the Mean Squared Error around $0.5$.
-
-The analytical variances are:
-- Variance of the Sample Mean: $\frac{(1-0)^2 / 12}{n} = \frac{1}{1200} \approx 0.000833$
-- Asymptotic Variance of Sample Median: $\frac{1}{4 n f(m)^2}$, since $f(m) = 1$, the variance is $\frac{1}{4 \cdot 100} = 0.0025$
-
-The simulated MSE values computed from R are:
+Theory gives:
 \begin{itemize}
-    \item \textbf{MSE of Sample Mean:} $\approx 0.000833$
-    \item \textbf{MSE of Sample Median:} $\approx 0.002418$
+    \item Variance of sample mean: $\frac{1/12}{100} \approx 0.000833$
+    \item Variance of sample median: $\frac{1}{4 \cdot 100 \cdot f(0.5)^2} = \frac{1}{400} = 0.0025$ (since $f(m)=1$ for Uniform)
 \end{itemize}
 
-\textbf{Conclusion:} The \textbf{sample mean} remains the better estimator than the sample median for estimating the center of a Uniform Distribution because it has a significantly lower MSE ($\approx 0.0008$ compared to $\approx 0.0024$). While the median is robust to outliers, the uniform distribution strictly bounds variables making large outliers impossible, hence making the mean an optimal efficient unbiased estimator.
+Simulated MSE:
+\begin{itemize}
+    \item \textbf{MSE of sample mean:} $\approx 0.000833$
+    \item \textbf{MSE of sample median:} $\approx 0.002418$
+\end{itemize}
+
+The sample mean is again the better estimator — its MSE is about three times smaller. For a uniform distribution there are no extreme outliers to worry about (the distribution is bounded), so the mean's higher sensitivity to all observations works in its favour here.
 
 \newpage
 \subsection{Problem 4.36: Bias-Variance Tradeoff for Variance Estimators}
 \textbf{Proof:}
-We know that $\frac{(n-1)S^2}{\sigma^2} \sim \chi^2_{n-1}$.
-For a Chi-squared distribution with $k$ degrees of freedom, the mean is $k$ and the variance is $2k$. Therefore:
-$$E\left[\frac{(n-1)S^2}{\sigma^2}\right] = n-1 \implies E[S^2] = \sigma^2$$
-$$Var\left(\frac{(n-1)S^2}{\sigma^2}\right) = 2(n-1) \implies \frac{(n-1)^2}{\sigma^4} Var(S^2) = 2(n-1) \implies Var(S^2) = \frac{2\sigma^4}{n-1}$$
-The MSE of the unbiased estimator $S^2$ is purely its variance:
-$$MSE(S^2) = Var(S^2) + \text{Bias}^2(S^2) = \frac{2\sigma^4}{n-1} + 0 = \frac{2\sigma^4}{n-1}$$
+Since $\frac{(n-1)S^2}{\sigma^2} \sim \chi^2_{n-1}$, and $\chi^2_k$ has mean $k$ and variance $2k$:
+$$E[S^2] = \sigma^2, \quad Var(S^2) = \frac{2\sigma^4}{n-1}$$
+So the MSE of the unbiased estimator is:
+$$MSE(S^2) = Var(S^2) = \frac{2\sigma^4}{n-1}$$
 
-Now let us consider the biased estimator $\hat{\sigma}^2 = \frac{n-1}{n} S^2$.
-Its expected value is:
-$$E[\hat{\sigma}^2] = \frac{n-1}{n} E[S^2] = \frac{n-1}{n}\sigma^2$$
-Thus, its bias is:
-$$\text{Bias}(\hat{\sigma}^2) = \frac{n-1}{n}\sigma^2 - \sigma^2 = -\frac{1}{n}\sigma^2$$
-The variance of $\hat{\sigma}^2$ is:
-$$Var(\hat{\sigma}^2) = \left(\frac{n-1}{n}\right)^2 Var(S^2) = \frac{(n-1)^2}{n^2} \frac{2\sigma^4}{n-1} = \frac{2(n-1)\sigma^4}{n^2}$$
-The MSE of the biased estimator $\hat{\sigma}^2$ is the sum of its variance and the square of its bias:
-$$MSE(\hat{\sigma}^2) = Var(\hat{\sigma}^2) + \text{Bias}^2(\hat{\sigma}^2) = \frac{2(n-1)\sigma^4}{n^2} + \left(-\frac{1}{n}\sigma^2\right)^2 = \frac{2n-2+1}{n^2}\sigma^4 = \frac{2n-1}{n^2}\sigma^4$$
+For the biased estimator $\hat{\sigma}^2 = \frac{n-1}{n} S^2$:
+$$E[\hat{\sigma}^2] = \frac{n-1}{n}\sigma^2, \quad \text{Bias} = -\frac{\sigma^2}{n}$$
+$$Var(\hat{\sigma}^2) = \frac{(n-1)^2}{n^2} \cdot \frac{2\sigma^4}{n-1} = \frac{2(n-1)\sigma^4}{n^2}$$
+$$MSE(\hat{\sigma}^2) = \frac{2(n-1)\sigma^4}{n^2} + \frac{\sigma^4}{n^2} = \frac{2n-1}{n^2}\sigma^4$$
 
-To compare the two MSEs, we consider their ratio or subtract them. Let's compare the denominators equivalently.
-We want to show $MSE(\hat{\sigma}^2) < MSE(S^2)$:
-$$\frac{2n-1}{n^2} < \frac{2}{n-1}$$
-$$(2n-1)(n-1) < 2n^2$$
-$$2n^2 - 2n - n + 1 < 2n^2 \implies -3n + 1 < 0 \implies 3n > 1$$
-Since $n \ge 2$ (for $S^2$ to be defined), $3n > 1$ is always true.
-Therefore, the biased estimator $\hat{\sigma}^2$ has a strictly smaller MSE than the unbiased estimator $S^2$, exemplifying the bias-variance tradeoff where introducing a small bias reduces the variance substantially enough to improve the overall MSE.
+Comparing:
+$$\frac{2n-1}{n^2} < \frac{2}{n-1} \iff (2n-1)(n-1) < 2n^2 \iff -3n+1 < 0$$
+which holds for all $n \ge 1$. So the biased estimator actually has a lower MSE than the unbiased one — a classic example of how accepting a small bias can reduce variance enough to win overall.
 
 \newpage
 \subsection{Problem 4.39: Maximum Likelihood for Exponential Distribution}
 \textbf{Solution:}
-\textbf{Part (a): Log-likelihood and ML estimate}
-Given $f(y; \lambda) = \lambda e^{-\lambda y}$, the likelihood function for a sample of size $n$ is:
-$$l(\lambda; y) = \prod_{i=1}^n \lambda e^{-\lambda y_i} = \lambda^n e^{-\lambda \sum_{i=1}^n y_i}$$
-Taking the natural logarithm, we obtain the log-likelihood function:
-$$L(\lambda) = \ln l(\lambda; y) = n \ln \lambda - \lambda \sum_{i=1}^n y_i$$
-To find the Maximum Likelihood Estimate (MLE), we take the derivative with respect to $\lambda$ and set it to 0 (score function):
-$$S(\lambda) = \frac{\partial L(\lambda)}{\partial \lambda} = \frac{n}{\lambda} - \sum_{i=1}^n y_i = 0$$
-Solving for $\hat{\lambda}$:
-$$\frac{n}{\hat{\lambda}} = \sum_{i=1}^n y_i \implies \hat{\lambda} = \frac{n}{\sum_{i=1}^n y_i} = \frac{1}{\bar{y}}$$
-Thus, the ML estimate for $\lambda$ is $1/\bar{y}$.
 
-\textbf{Part (b): Fisher Information and Standard Error}
-The Fisher Information $I(\lambda)$ is the negative expected value of the second derivative of the log-likelihood function evaluated over one observation (or the total information $I_n(\lambda)$ for $n$ observations).
-$$\frac{\partial^2 L(\lambda)}{\partial \lambda^2} = -\frac{n}{\lambda^2}$$
-Since there is no random variable $Y$ in the second derivative, the expected value is strictly the expression itself:
-$$I_n(\lambda) = E\left[-\frac{\partial^2 L(\lambda)}{\partial \lambda^2}\right] = \frac{n}{\lambda^2}$$
-The asymptotic variance of the MLE $\hat{\lambda}$ is the inverse of the Fisher information:
-$$Var(\hat{\lambda}) \approx \frac{1}{I_n(\lambda)} = \frac{\lambda^2}{n}$$
-Thus, the approximate large-sample standard error of $\hat{\lambda}$ is:
-$$SE(\hat{\lambda}) = \frac{\hat{\lambda}}{\sqrt{n}} = \frac{1}{\bar{y}\sqrt{n}}$$
+\textbf{(a) Log-likelihood and MLE:}
+For $f(y;\lambda) = \lambda e^{-\lambda y}$, the log-likelihood for $n$ observations is:
+$$L(\lambda) = n\ln\lambda - \lambda\sum_{i=1}^n y_i$$
+Setting $\frac{\partial L}{\partial \lambda} = 0$:
+$$\frac{n}{\hat{\lambda}} = \sum y_i \implies \hat{\lambda} = \frac{1}{\bar{y}}$$
 
-\textbf{Part (c): Plotting the relative log-likelihood}
-For $\bar{y} = 10$, we have $\hat{\lambda} = 1/10 = 0.1$.
-Substitute into $L(\lambda)$:
-$$L(\lambda) - L(\hat{\lambda}) = \left( n \ln \lambda - 10n\lambda \right) - \left( n \ln(0.1) - 10n(0.1) \right) = n \left[ \ln \left(\frac{\lambda}{0.1}\right) - 10(\lambda - 0.1) \right]$$
+\textbf{(b) Fisher Information and Standard Error:}
+$$\frac{\partial^2 L}{\partial \lambda^2} = -\frac{n}{\lambda^2} \implies I_n(\lambda) = \frac{n}{\lambda^2}$$
+$$SE(\hat{\lambda}) \approx \frac{\hat{\lambda}}{\sqrt{n}} = \frac{1}{\bar{y}\sqrt{n}}$$
+
+\textbf{(c) Relative log-likelihood:}
+For $\bar{y}=10$, so $\hat{\lambda}=0.1$:
+$$L(\lambda) - L(\hat{\lambda}) = n\left[\ln\!\left(\frac{\lambda}{0.1}\right) - 10(\lambda - 0.1)\right]$$
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{Estimation_prob4_plot.pdf}
-    \caption{Relative Log-Likelihood curve for exponential estimator across varying $n$}
+    \caption{Relative log-likelihood for the exponential MLE across different sample sizes}
 \end{figure}
 
-The vertical line marks the true estimate $\hat{\lambda}=0.1$. As $n$ increases, the log-likelihood function becomes dramatically sharper around the maximum, signifying precisely reduced uncertainty and a drastically lower standard error (the curve approximates a steep quadratic/parabola per the Fisher Information).
+The vertical line is at $\hat{\lambda}=0.1$. As $n$ grows the curve becomes sharper (narrower peak), which means we are more certain about the estimate — the standard error shrinks accordingly.
 
 \newpage
 % =====================================================
@@ -182,134 +158,103 @@ The vertical line marks the true estimate $\hat{\lambda}=0.1$. As $n$ increases,
 
 \subsection{Problem 4.12: Comparing Group Means}
 \textbf{Solution:}
-Using R, we extracted the `income` and `race` variables into an appropriate structure.
-\textbf{(a) Boxplot Comparison:}
+
+\textbf{(a) Boxplot comparison:}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{CI_prob1_boxplot.pdf}
-    \caption{Side-by-side boxplot of Income levels across racial-ethnic categories in the sample.}
+    \caption{Side-by-side boxplot of income by racial-ethnic group}
 \end{figure}
+The boxplot shows White households generally have higher median incomes than Hispanic and Black households. Whites also show greater spread, with more outliers at the top end.
 
-\textbf{(b) 90\% CI (Equal Variances)}
-Using a two-sample t-test pooled, assuming homoscedasticity ($\sigma_1^2 = \sigma_2^2$):
-$t$-test output yields a 90\% confidence interval for the difference $\mu_{W} - \mu_{B}$ as:
-\textbf{90\% CI: (4.65, 24.81) thousands of dollars.}
-Interpretation: We are 90\% confident that the population mean income for Whites is between \textbf{4.65 and 24.81 thousand dollars higher} than the mean income for Blacks. Because this interval does not contain 0, it suggests a statistically significant difference in mean incomes between the two groups at the $\alpha=0.10$ level.
+\textbf{(b) 90\% CI assuming equal variances:}
+Running \texttt{t.test(..., var.equal=TRUE, conf.level=0.90)} gives:
+$$\text{90\% CI for } \mu_W - \mu_B: \quad (4.65,\ 24.81) \text{ thousand dollars}$$
+Since 0 is not in this interval, there is a statistically significant income difference at the 10\% level.
 
-\textbf{(c) 90\% CI (Unequal Variances)}
-Applying Welch's generalized $t$-test without the equal-variance assumption:
-\textbf{90\% CI: (6.94, 22.52) thousands of dollars.}
-Comparison: The interval without the equal-variance assumption is considerably narrower. It also maintains that the value $0$ is not included in the interval. The differing sample sizes and evident variances mean assuming equal variances inflated standard error assumptions, while Welch's approximation corrected degrees of freedom more naturally to the data.
+\textbf{(c) 90\% CI without equal-variance assumption (Welch):}
+$$\text{90\% CI}: \quad (6.94,\ 22.52) \text{ thousand dollars}$$
+The Welch interval is narrower. When the two groups have quite different sample sizes, assuming equal variances inflates the standard error; Welch's correction adjusts the degrees of freedom more appropriately.
 
 \newpage
 \subsection{Problem 4.16: Comparing Proportions using Wald CI}
 \textbf{Solution:}
-We cross-categorize Marijuana usage as the outcome/response and Alcohol usage as the group.
 \begin{itemize}
-    \item Group 1 (Alcohol = Yes): $n_1 = 1949$. Used Marijuana ($m_1) = 911 + 44 = 955$. Estimated probability: $p_1 = 955 / 1949 = 0.4900$.
-    \item Group 2 (Alcohol = No): $n_2 = 327$. Used Marijuana ($m_2) = 3 + 2 = 5$. Estimated probability: $p_2 = 5 / 327 = 0.0153$.
+    \item Alcohol users: $n_1 = 1949$, marijuana users $= 955$, $\hat{p}_1 = 955/1949 = 0.490$
+    \item Non-alcohol users: $n_2 = 327$, marijuana users $= 5$, $\hat{p}_2 = 5/327 = 0.0153$
 \end{itemize}
 
-\textbf{(a) Formula (4.13) - Wald 95\% CI:}
-The standard error of the difference in independent proportions is:
-$$SE(\hat{p}_1 - \hat{p}_2) = \sqrt{\frac{p_1(1-p_1)}{n_1} + \frac{p_2(1-p_2)}{n_2}} = \sqrt{\frac{0.49(0.51)}{1949} + \frac{0.015(0.985)}{327}} \approx 0.01320$$
-For a 95\% confidence level, $z = 1.96$.
-$$\text{Margin of Error} = 1.96 \times 0.01320 \approx 0.02587$$
-$$\text{Point Estimate} = p_1 - p_2 = 0.4900 - 0.0153 = 0.4747$$
-The 95\% Wald CI is:
-$$CI = 0.4747 \pm 0.02587 = (0.4488, 0.5006)$$
+\textbf{(a) Wald 95\% CI:}
+$$SE(\hat{p}_1 - \hat{p}_2) = \sqrt{\frac{0.49 \times 0.51}{1949} + \frac{0.015 \times 0.985}{327}} \approx 0.01320$$
+$$CI = (0.4747 - 1.96 \times 0.01320,\ 0.4747 + 1.96 \times 0.01320) = (0.4488,\ 0.5006)$$
 
-\textbf{(b) Statistical Software (prop.test):}
-Using `prop.test` in R, setting `correct=FALSE` to disable Yates continuity correction (which mirrors strict asymptotic Wald test bounds).
-The output yields the Confidence Interval:
-95 percent confidence interval:
-$0.4488310, 0.5005777$
+\textbf{(b) Using \texttt{prop.test} in R:}
+With \texttt{correct=FALSE}: CI = $(0.4488,\ 0.5006)$ — matches exactly.
 
-\textbf{Conclusion:} 
-The formula exactly aligns with strictly uncorrected statistical software. We are 95\% confident that the true population difference in marijuana usage proportion between teenagers who drink alcohol versus those who do not lies between 44.88\% and 50.06\%. Since the interval heavily isolates itself far above 0, alcohol consumption is powerfully associated with an intensely increased likelihood of marijuana usage. Assumptions made involve asserting large enough sample sizes ($np, n(1-p) > 10$), and independence between groups.
+The interval is entirely above 0, so we can say with 95\% confidence that teenagers who drink are substantially more likely to have also used marijuana. Both samples are large enough ($np > 10$) for the normal approximation to hold well here.
 
-\subsection{Problem 4.17: Non-Normality of t-distribution}
+\subsection{Problem 4.17: Tail Behaviour of the $t$-Distribution}
 \textbf{Solution:}
-Using `rt()` in R, we derived the specified 10,000 observations and formed a histogram next to a QQ-plot.
+I simulated 10,000 observations from a $t(3)$ distribution in R.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{CI_prob3_plots.pdf}
-    \caption{Histogram and Normal Quantile Plot of $t$-distribution data ($df=3$)}
+    \caption{Histogram and QQ-plot of $t(3)$ data}
 \end{figure}
 
-A histogram of a t-distribution with 3 degrees of freedom appears largely bell-shaped, symmetrically mimicking a normal distribution visually. To the untrained eye, the histogram often masks deviations from normality that happen primarily in the extreme bins. Even if the tails are visually slightly broader, it requires critical scrutiny to differentiate it from a Normal histogram.
-Contrarily, the Normal Quantile (QQ) plot demonstrates deviations explicitly. If the data perfectly conformed to normality, it would adhere perfectly to the red straight line. The extreme "S"-shaped curves at both the outer extremes of the Q-Q plot starkly show heavy-tailed characteristics mathematically distinctive to lower degrees of freedom t-distributions.
+Looking at just the histogram it is hard to tell that this is not normal — it is symmetric and roughly bell-shaped. The QQ-plot is more revealing: the points curve away from the line at both ends, which is the signature of heavy tails. The $t$ with low degrees of freedom puts more probability in the extremes than the normal does, and the QQ-plot picks this up clearly.
 
 \newpage
 \subsection{Problem 4.45: Confidence Interval under Multinomial Distribution}
 \textbf{Solution:}
-\textbf{Part (a)}:
-Given probabilities $\pi_1 = \pi^2, \pi_2 = 2\pi(1-\pi), \pi_3 = (1-\pi)^2$ and sum of counts $n = y_1 + y_2 + y_3$.
-The likelihood is:
-$$l(\pi) \propto (\pi^2)^{y_1} (2\pi(1-\pi))^{y_2} ((1-\pi)^2)^{y_3}$$
-Taking the natural logarithm yields the log-likelihood $L(\pi)$:
-$$L(\pi) = c + y_1(2 \ln \pi) + y_2(\ln 2 + \ln \pi + \ln(1-\pi)) + y_3(2 \ln(1-\pi))$$
-$$L(\pi) = c' + (2y_1 + y_2)\ln \pi + (y_2 + 2y_3)\ln(1-\pi)$$
-To find the MLE, differentiate with respect to $\pi$ and set equal to $0$:
-$$\frac{dL(\pi)}{d\pi} = \frac{2y_1 + y_2}{\pi} - \frac{y_2 + 2y_3}{1-\pi} = 0$$
-$$(2y_1 + y_2)(1-\pi) = (y_2 + 2y_3)\pi \implies 2y_1 + y_2 - \pi(2y_1 + y_2) = \pi y_2 + 2\pi y_3$$
-$$2y_1 + y_2 = \pi(2y_1 + y_2 + y_2 + 2y_3) = \pi(2y_1 + 2y_2 + 2y_3) = \pi(2n)$$
+
+\textbf{Part (a) -- MLE:}
+With genotype probabilities $\pi^2, 2\pi(1-\pi), (1-\pi)^2$ and counts $y_1, y_2, y_3$:
+$$L(\pi) = (2y_1+y_2)\ln\pi + (y_2+2y_3)\ln(1-\pi) + \text{const}$$
+Setting the derivative to zero:
 $$\hat{\pi} = \frac{2y_1 + y_2}{2n}$$
 
-\textbf{Part (b)}:
-Find Fisher Information $I(\pi)$:
-First derive the second derivative:
-$$\frac{d^2L(\pi)}{d\pi^2} = -\frac{2y_1 + y_2}{\pi^2} - \frac{y_2 + 2y_3}{(1-\pi)^2}$$
-Substitute expectations into the derivative to retrieve Information matrix representation:
-$E[y_1] = n\pi^2, \quad E[y_2] = n[2\pi(1-\pi)], \quad E[y_3] = n(1-\pi)^2$
-$$E[2y_1 + y_2] = 2n\pi^2 + 2n\pi(1-\pi) = 2n\pi$$
-$$E[y_2 + 2y_3] = 2n\pi(1-\pi) + 2n(1-\pi)^2 = 2n(1-\pi)$$
-$$I_n(\pi) = -E\left[\frac{d^2L}{d\pi^2}\right] = \frac{2n\pi}{\pi^2} + \frac{2n(1-\pi)}{(1-\pi)^2} = \frac{2n}{\pi} + \frac{2n}{1-\pi} = \frac{2n}{\pi(1-\pi)}$$
-Large-sample standard error of MLE:
-$$SE(\hat{\pi}) \approx \frac{1}{\sqrt{I_n(\hat{\pi})}} = \sqrt{\frac{\hat{\pi}(1-\hat{\pi})}{2n}}$$
+\textbf{Part (b) -- Fisher Information:}
+$$\frac{d^2L}{d\pi^2} = -\frac{2y_1+y_2}{\pi^2} - \frac{y_2+2y_3}{(1-\pi)^2}$$
+Taking expectations using $E[y_j]$ for each genotype:
+$$I_n(\pi) = \frac{2n}{\pi} + \frac{2n}{1-\pi} = \frac{2n}{\pi(1-\pi)}$$
+$$SE(\hat{\pi}) \approx \sqrt{\frac{\hat{\pi}(1-\hat{\pi})}{2n}}$$
 
-\textbf{Part (c)}:
-Assuming large enough $n$, MLE distributions normally approximate. Thus, a (Wald-type) 95\% confidence interval leverages $Z \approx 1.96$:
-$$CI_{95\%} = \hat{\pi} \pm 1.96 \times SE(\hat{\pi}) = \hat{\pi} \pm 1.96 \sqrt{\frac{\hat{\pi}(1-\hat{\pi})}{2n}}$$
+\textbf{Part (c) -- 95\% Wald CI:}
+For large $n$, the MLE is approximately normal, so:
+$$CI_{95\%} = \hat{\pi} \pm 1.96\sqrt{\frac{\hat{\pi}(1-\hat{\pi})}{2n}}$$
 
 \subsection{Problem 4.50: Simulation of Confidence Intervals ($p=0.06, n=20$) -- Interactive Applet}
 \textbf{Solution:}
 
-Using the interactive applet at \url{https://istats.shinyapps.io/ExploreCoverage/} with parameters $p = 0.06$, $n = 20$, and a 95\% confidence level:
+I used the applet at \url{https://istats.shinyapps.io/ExploreCoverage/} with $p=0.06$, $n=20$, and a 95\% nominal confidence level.
 
-\textbf{(a) Wald CI -- 10 samples ($n=20$, $p=0.06$):}
-
-After drawing 10 samples of size $n=20$ using the Large Sample (Wald) interval method, the applet reported:
+\textbf{(a) Wald CI, 10 samples:}
 \begin{itemize}
-    \item After 20 simulations: 15 intervals cover, 5 do not cover.
-    \item \textbf{Observed coverage: 75.0\%} (25.0\% do not cover)
+    \item Result: 15 out of 20 intervals covered the true $p$
+    \item \textbf{Coverage: 75\%}
 \end{itemize}
-We expect coverage to be at least 95\%, but here it is only 75\%. This is because when $n$ is small and $p$ is close to 0, the normal approximation to the binomial fails. For binomial to be treated as approximately normal, $n$ must be large.
+This is well below the expected 95\%. The issue is that $n=20$ is too small for the normal approximation to work when $p$ is this close to 0 — the binomial is very skewed in this case.
 
-\textbf{(b) Wald CI -- 1000 samples ($n=20$, $p=0.06$):}
-
-After drawing 1000 samples of size $n=20$ using the Wald interval method:
+\textbf{(b) Wald CI, 1000 samples:}
 \begin{itemize}
-    \item After 1000 simulations: 711 intervals cover, 289 do not.
-    \item \textbf{Observed coverage: 71.1\%} (28.9\% do not cover)
+    \item Result: 711 out of 1000 intervals covered the true $p$
+    \item \textbf{Coverage: 71.1\%}
 \end{itemize}
-Even with 1000 samples, the Wald coverage is far below the nominal 95\%. The sampling distribution of $\hat{p}$ for small $n$ and small $p$ is highly discrete and skewed -- it cannot be approximated well by a normal distribution. The Wald interval fails systematically in this regime.
+Even with 1000 replications, the Wald interval only achieves about 71\% coverage. The sampling distribution of $\hat{p}$ is discrete and skewed for small $n$ and small $p$ -- the normal approximation simply does not hold here.
 
-\textbf{(c) Degenerate Wald CI when $\hat{p} = 0$:}
+\textbf{(c) Why Wald CI collapses when $\hat{p} = 0$:}
+If all $n$ trials result in failure, then $\hat{p}=0$ and the Wald CI becomes:
+$$0 \pm z\sqrt{0} = (0,0)$$
+This interval has zero width and never contains a positive $p$. Since getting zero successes is quite probable when $p=0.06$ and $n=20$ (probability $\approx 0.29$), this happens often and drags the coverage way down.
 
-When $Y = 0$ successes, $\hat{p} = 0$. The Wald CI formula gives:
-$$\hat{p} \pm z \sqrt{\frac{\hat{p}(1-\hat{p})}{n}} = 0 \pm z\sqrt{0} = (0, 0)$$
-Since the true $p = 0.06 > 0$, this degenerate interval $(0,0)$ never captures the true value. As $p \to 0$, the probability of observing $Y=0$ approaches 1, so the Wald interval systematically collapses to $(0,0)$ and coverage drops to 0.
-
-\textbf{(d) Wilson Score CI -- 1000 samples ($n=20$, $p=0.06$):}
-
-Switching the method to Wilson Score in the applet with the same parameters:
+\textbf{(d) Wilson Score CI, 1000 samples:}
 \begin{itemize}
-    \item After 1000 simulations: 975 intervals cover, 25 do not.
-    \item \textbf{Observed coverage: 97.5\%} (2.5\% do not cover)
+    \item Result: 975 out of 1000 intervals covered the true $p$
+    \item \textbf{Coverage: 97.5\%}
 \end{itemize}
-The Wilson score interval dramatically restores coverage near the nominal 95\%, validating that if we draw 1000 samples and construct 1000 confidence intervals, the true parameter $p$ will lie in approximately 950 or more of them.
+Switching to the Wilson score interval fixes the problem. It does not collapse to a point when $\hat{p}=0$, and its coverage is close to the nominal 95\% even for small $n$ and extreme $p$.
 
 
 \newpage
@@ -320,82 +265,64 @@ The Wilson score interval dramatically restores coverage near the nominal 95\%, 
 
 \subsection{Problem 4.64: Bias-Variance Tradeoff (Bayes vs ML Estimator)}
 \textbf{Solution:}
+
 \textbf{Part (a):}
-For the Bayesian estimator: 
-$E[\tilde{\pi}] = \frac{E[Y]+1}{n+2} = \frac{n\pi + 1}{n+2}$.
-Thus, the bias is:
-$$\text{Bias}(\tilde{\pi}) = E[\tilde{\pi}] - \pi = \frac{n\pi + 1}{n+2} - \pi = \frac{n\pi + 1 - n\pi - 2\pi}{n+2} = \frac{1 - 2\pi}{n+2}$$
-The variance is:
-$$Var(\tilde{\pi}) = Var\left(\frac{Y+1}{n+2}\right) = \frac{1}{(n+2)^2} Var(Y) = \frac{n\pi(1-\pi)}{(n+2)^2}$$
+The Bayesian estimator (using a uniform prior on $\pi$) is $\tilde{\pi} = \frac{Y+1}{n+2}$. Its bias is:
+$$\text{Bias}(\tilde{\pi}) = \frac{n\pi+1}{n+2} - \pi = \frac{1-2\pi}{n+2}$$
+And its variance:
+$$Var(\tilde{\pi}) = \frac{n\pi(1-\pi)}{(n+2)^2}$$
 
-Comparison against ML $\hat{\pi} = Y/n$:
-ML Estimator is structurally unbiased ($\text{Bias} = 0$), contrasting the non-zero bias inherently injected into the Bayesian estimator.
-ML Estimator Variance is $\frac{\pi(1-\pi)}{n}$. The variance of the Bayes estimator is generally structurally smaller, especially mitigating extreme variability near zero bounds.
+Compare with the MLE $\hat{\pi} = Y/n$, which has zero bias but variance $\pi(1-\pi)/n$. The Bayes estimator is biased but its variance is smaller, especially when $n$ is small.
 
-\textbf{Part (b): Mean Squared Errors}
-$$MSE(\tilde{\pi}) = \text{Bias}^2 + \text{Var} = \left(\frac{1-2\pi}{n+2}\right)^2 + \frac{n\pi(1-\pi)}{(n+2)^2} = \frac{n\pi(1-\pi) + (1-2\pi)^2}{(n+2)^2}$$
+\textbf{Part (b): MSE comparison}
+$$MSE(\tilde{\pi}) = \frac{n\pi(1-\pi)+(1-2\pi)^2}{(n+2)^2}$$
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{Bayesian_prob1_plot.pdf}
-    \caption{Mean Squared Errors: ML Estimator vs Bayes Estimator}
+    \caption{MSE of ML vs Bayes estimator for different values of $\pi$}
 \end{figure}
 
-The plots explicitly showcase that for $n=10$, the Bayes MSE rests smaller than the ML MSE primarily structurally toward the center ($\pi \approx 0.5$) where maximum likelihood estimators inherently encounter extreme high variances natively. The Bayesian uniform prior structurally pulls (shrinks) estimators directly towards $1/2$, essentially trading injected biases against peak central variances. For $n=1000$, the sample completely overwhelms the prior, making both MSEs essentially identical.
+For $n=10$ the Bayes MSE is lower than the ML MSE across most values of $\pi$ — the prior pulls the estimate toward 0.5, which trades a little bias for a noticeable variance reduction. By $n=1000$ the data overwhelms the prior and the two estimators behave essentially the same.
 
 \subsection{Problem 4.66: Anorexia Study and Bayesian Shrinkage}
 \textbf{Solution:}
 For $\tilde{\mu} = c\bar{Y}$:
-$E[\tilde{\mu}] = c\mu$, meaning absolute $\text{Bias} = |c\mu - \mu| = \mu(1-c)$. As $c \to 0$, structural biases actively expand to bounds of full parameters $\mu$.
-$Var(\tilde{\mu}) = c^2 \frac{\sigma^2}{n}$. As $c \to 0$, intrinsic variance actively shrinks to identical zero magnitudes.
-
-\textbf{MSE Profile and Optimum Evaluation:}
-Assuming conditions $\mu=\sigma=n=1$:
-$$\text{Bias}(\tilde{\mu})^2 = (1-c)^2$$
-$$Var(\tilde{\mu}) = c^2$$
+$$\text{Bias} = (c-1)\mu, \quad Var(\tilde{\mu}) = c^2 \frac{\sigma^2}{n}$$
+Setting $\mu = \sigma = n = 1$:
 $$MSE = (1-c)^2 + c^2 = 1 - 2c + 2c^2$$
-To minimize MSE, differentiate over $c$:
-$$\frac{d(MSE)}{dc} = -2 + 4c = 0 \implies c_{opt} = 0.5$$
+Differentiating and setting to zero: $c_{opt} = 0.5$.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.55\textwidth]{Bayesian_prob2_plot.pdf}
-    \caption{Plot dissecting bias mapping interactions structurally resulting in MSE optimization curve}
+    \caption{Bias, variance, and MSE as a function of $c$}
 \end{figure}
 
-In a Bayesian framework, utilizing Normal-Normal conjugacy equations translates sample variables to posterior frameworks proportional to a weighted sum scaling between priors and current measurements. If an explicit structural prior density fixes means centrally around $0$, multiplying standard means artificially by constraint parameter sequences functions structurally identically to leveraging un-weighed prior strengths. Shrinkage toward prior 0 minimizes overall long-run MSEs substantially. As observational limits ($n$) grow indefinitely, constraints revert implicitly enabling identical non-shrunken approximations.
+In a Bayesian sense, multiplying $\bar{Y}$ by a constant $c < 1$ is equivalent to shrinking the estimate toward a prior mean of 0. Shrinkage always hurts a little bit in terms of bias, but when the prior is reasonable (here the true mean is small) the variance reduction more than compensates, giving a lower overall MSE. As $n$ grows, the optimal amount of shrinkage decreases — the data speak for themselves.
 
 \newpage
 \subsection{Problem 4.77: Order Statistics and Medians}
 \textbf{Solution:}
-By definition, the population median $M$ is the precisely divided $50^{th}$ percentile mark of continuous distribution probability density spaces. Ergo, for any independently drawn numeric variable scalar event $Y_i$,
-$P(Y_i < M) \equiv 0.50$.
-Let a standard counting sequence tracker $X$ signify aggregate items landing functionally situated underneath bounded $M$ values inside sets spanning volume $n$. By fundamental metric classification laws measuring identical, non-influencing independent dual-outcome bounds, $X$ rigidly adheres to Bernoulli sequences $Binomial(n, 0.50)$.
+The population median $M$ satisfies $P(Y_i < M) = 0.5$. If we count how many observations in a sample of size $n$ fall below $M$, that count $X$ follows $\text{Binomial}(n, 0.5)$.
 
-Given rank-aligned boundaries identified systematically $Y_{(1)} \le Y_{(2)} \le \dots \le Y_{(n)}$:
-The population median fundamentally nests isolated enclosed inside interval blocks mapping subsets sequentially bordered by ranges measuring spanning indices $(Y_{(a)}, Y_{(b)})$ explicitly exactly exclusively whenever the quantitative bounded metric threshold tracks identically nested boundaries functionally bounding integer elements precisely resting internally exceeding lower tier counts $a-1$ and under limits bounding exceeding max ceilings measuring bound variables $b$. 
-Therefore:
-$P(Y_{(a)} \le M \le Y_{(b)}) \equiv P(a \le X < b)$
-Using normal probability frameworks assuming generalized large numeric parameter volumes, binomial sets behave functionally congruent identically spanning mapping identically matching approximate symmetric bounds mapping exactly $Z$-scores covering standardized $1.96$:
-$$X \sim N\left(\mu = \frac{n}{2}, \sigma = \sqrt{n(0.5)(0.5)} = \frac{\sqrt{n}}{2}\right)$$
-We explicitly center integer cutoffs yielding $95\%$ areas, directly finding index integers natively tracking numeric identities bounding:
-$$a \approx \frac{n}{2} - 1.96 \left(\frac{\sqrt{n}}{2}\right)$$
-$$b \approx \frac{n}{2} + 1.96 \left(\frac{\sqrt{n}}{2}\right)$$
-This fundamentally creates probability boundary confidence layers intrinsically without assuming strict underlying parameterized frameworks!
+We want to find indices $a$ and $b$ such that $P(Y_{(a)} \le M \le Y_{(b)}) \approx 0.95$. This is equivalent to finding $a, b$ such that $P(a \le X < b) \approx 0.95$.
 
-\subsection{Problem 4.78: Dirichlet Conjugacy in Multinomial Methods}
+For large $n$, $X \approx N(n/2,\ n/4)$, so:
+$$a \approx \frac{n}{2} - 1.96 \cdot \frac{\sqrt{n}}{2}, \quad b \approx \frac{n}{2} + 1.96 \cdot \frac{\sqrt{n}}{2}$$
+This gives a nonparametric 95\% CI for the median using only order statistics — no distributional assumptions needed.
+
+\subsection{Problem 4.78: Dirichlet Conjugacy in Multinomial Models}
 \textbf{Solution:}
-\textbf{(a) Uniform Simplex Definition:} Let $f(\pi) \propto \prod_{j=1}^c \pi_j^{\alpha_j - 1}$. For identical uniform density spanning non-biased metric systems, components mapping exponent terms exclusively equal $0$. Consequently mapping parameter bounds establishes uniform configurations specifically leveraging parameter limits explicitly setting $\alpha_j = 1$ rigidly globally.
-\textbf{(b) Conjugacy Mechanism:} 
-Likelihood: $L \propto \prod \pi_j^{y_j}$. Prior: $P(\pi) \propto \prod \pi_j^{\alpha_j - 1}$.
-Multiplying directly aggregates identically structured parameter components combining exponent structures:
-$Post(\pi \mid y) \propto \prod \pi_j^{(y_j + \alpha_j) - 1}$. 
-The density structurally maps exactly explicitly perfectly returning onto identically formatted underlying mathematical sets (the explicit mathematical definition identifying conjugacy algorithms).
-\textbf{(c) Posterior Mapping Mean Coordinates:}
-Properties intrinsic explicitly governing formatted defined Dirichlet structures structurally extract quantitative estimated value sequences returning fractional mapped equations identical bounding limits natively extracting $\frac{\alpha_{new}}{\sum \alpha_{new}}$.
-Substituting parameters actively parsed:
-$$E_{post}[\pi_j \mid y_j] = \frac{y_j + \alpha_j}{\sum (y_k + \alpha_k)} = \frac{y_j + \alpha_j}{n + \sum \alpha_k}$$
-When explicitly forcing configurations evaluating strictly structured mapped sets assigning global constants uniformly mapping uniformly to integer bounds ($\alpha_j = 1$), the denominator logically appends integer $+c$, rendering explicit structural interpretations intrinsically adding precisely a single scalar artifact tracking functionally identically to smoothing algorithms adding $+1$ exclusively to all distinct sequence observations prior evaluating normalized metrics.
+
+\textbf{(a)} A uniform prior over the simplex corresponds to a $\text{Dirichlet}(\alpha_1, \dots, \alpha_c)$ with all $\alpha_j = 1$.
+
+\textbf{(b)} The Dirichlet is conjugate to the multinomial. Combining the likelihood $L \propto \prod \pi_j^{y_j}$ with the prior $\propto \prod \pi_j^{\alpha_j-1}$ gives a posterior:
+$$\pi \mid y \sim \text{Dirichlet}(y_1+\alpha_1,\ \dots,\ y_c+\alpha_c)$$
+
+\textbf{(c)} The posterior mean for each $\pi_j$ is:
+$$E[\pi_j \mid y] = \frac{y_j + \alpha_j}{n + \sum_k \alpha_k}$$
+With $\alpha_j = 1$ for all $j$ (uniform prior), this becomes $\frac{y_j + 1}{n + c}$, which is exactly Laplace smoothing — adding a pseudo-count of 1 to each category before computing proportions to avoid zero estimates.
 
 \newpage
 % =====================================================
@@ -403,82 +330,85 @@ When explicitly forcing configurations evaluating strictly structured mapped set
 % =====================================================
 \section{Module 4: Linear Models}
 
-\subsection{Problem 6.1: Scottish Hill Races Data Analysis}
+\subsection{Problem 6.1: Scottish Hill Races}
 \textbf{Solution:}
-\textbf{(a) Scatterplot and Predictive Sequences:}
-We extract explicitly metric structures from \texttt{ScotsRaces.dat} establishing sequential prediction arrays.
+
+\textbf{(a) Regression of men's time on women's time:}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.45\textwidth]{Linear_prob1_scatterplot.pdf}
-    \caption{Scatterplot with optimal linear model regression structures identifying records.}
+    \caption{Men's vs women's race times with fitted regression line}
 \end{figure}
 
-The statistically regressed equation bounding sequential coordinates evaluates equivalently exactly to:
-$$\text{Time}_M \approx -2.834 + 0.871(\text{Time}_W)$$
-Predicting tracking outcomes substituting \textit{Highland Fling} coordinates bounded linearly evaluated $W = 490.05$ outputs precisely returned metrics projecting values hitting exactly: $\approx 423.94$ minutes.
+Fitted model: $\hat{\text{Time}}_M = -2.834 + 0.871 \times \text{Time}_W$
 
-\textbf{(b) Functional Quantitative Bouncing Correlation Properties:}
-Evaluations analytically checking metric boundaries checking correlations: $r = 0.9958$. This implies overwhelmingly massive positive structuring configurations functionally confirming implicitly men's tracking metrics explicitly scale mapping identically bounded positively aligned linearly. 
+For the Highland Fling where women's time is 409.05 min, the predicted men's time is $-2.834 + 0.871 \times 409.05 \approx 353.4$ min.
 
-\textbf{(c) Bounding Regression Without Intercept Offsets:}
-By enforcing constraint parameters inherently bounding limits establishing models evaluating $E(y_i) = \beta x_i$, models naturally intersect $(0,0)$.
-Resulting calculated slope sequence equals approximately evaluating implicitly returning metrics $0.8523$.
-Interpretation identically parses quantitatively evaluating structurally suggesting Men mathematically function systematically executing elements tracking quantitatively fundamentally $\approx 85\%$ total fraction mapping duration timelines compared functionally exactly identically evaluated equivalent variables identifying structurally metrics measuring women's bounds.
+\textbf{(b) Correlation:}
+$r = 0.9959$. This is a very strong positive linear relationship -- as women's finishing times go up (harder/longer races), men's times increase in almost the same proportion. The two are essentially measuring the same underlying difficulty.
 
-\subsection{Problem 6.3: Diagnostics Identifying Influential Datasets}
+\textbf{(c) Regression through the origin:}
+Fitting $\hat{\text{Time}}_M = \beta \times \text{Time}_W$ (no intercept) gives $\hat{\beta} = 0.8523$. So men complete the same courses in roughly 85\% of women's time. The slope is slightly higher than in (a), which makes sense once you remove the negative intercept.
+
+\subsection{Problem 6.3: Influential Observations in Firearms Data}
 \textbf{Solution:}
-Linear model diagnostics explicitly compute quantitative matrices finding deviations maximizing internally measured Cook's Distance measurements.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{Linear_prob2_plots.pdf}
-    \caption{Firearms model regression plots alongside exclusively highlighted sequential outliers bounding Cook's index structures.}
+    \caption{Firearms regression with Cook's distance highlighted}
 \end{figure}
-Executing algorithmic queries explicitly extracts explicitly isolating data vector element index $\#11$ conforming systematically inherently exactly evaluating to \textbf{Hawaii}. With distinctly drastically low percentage combinations natively generating uniquely non-complying leverage arrays maximizing distance mathematically disrupting line elements significantly.
-Effect dynamically altering measured tracking correlations quantitatively identifies shifts extracting boundaries moving inherently fundamentally:
-- Before isolating bounds: $r = 0.6976$
-- After isolation structures: $r = 0.7823$
-The observation structurally inherently heavily dragged configurations globally distorting regressions globally structurally functionally suppressing underlying positive trajectory patterns explicitly significantly mathematically.
 
-\subsection{Problem 6.5: Exponential Parameterization using Corona Virus Records}
+Computing Cook's distances, observation 11 (Hawaii) stands out with a Cook's $D \approx 0.80$, far above the next highest value of about 0.074. Hawaii has very low gun ownership and very low gun death rates, which sits far from the pattern of other states and pulls the regression line toward it.
+
+Removing this point:
+\begin{itemize}
+    \item Correlation before removal: $r = 0.6976$
+    \item Correlation after removal: $r = 0.7823$
+\end{itemize}
+The positive relationship between ownership and gun deaths becomes clearer once this outlier is removed.
+
+\subsection{Problem 6.5: Modelling COVID-19 Case Growth}
 \textbf{Solution:}
-Logarithmical transformations natively straighten exponentially bounding mappings establishing inherently functional linear arrays parsing equivalent mapping tracking regression values naturally parsing easily evaluated mathematical algorithms optimally parsing structures.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\textwidth]{Linear_prob3_scatterplots.pdf}
-    \caption{Dual comparative visualizations transforming mathematically exponentially scaled charts functionally naturally tracking identically linear vectors extracting mathematically bounds.}
+    \caption{Raw case counts (left) vs log-transformed (right) against days}
 \end{figure}
 
-Correlation statistics checking identically scaled elements returned values identifying:
-- Untransformed elements evaluated: $r \approx 0.793$
-- Scaled normalized representations evaluated: $r \approx 0.997$
+On the raw scale, cases grow exponentially and the scatter is heavily curved. After taking logs:
+\begin{itemize}
+    \item Correlation with raw cases: $r \approx 0.793$
+    \item Correlation with $\log(\text{cases})$: $r \approx 0.997$
+\end{itemize}
 
-Logarithmic prediction lines formulated evaluated explicitly natively structurally identically generating equivalently parameters:
-$$\log(\text{cases}) = 2.843 + 0.3088(\text{time})$$
-Under logarithmic frameworks, properties intrinsic strictly state explicitly variables explicitly exponentially mapping elements extracting equations extracting multiplicative elements structurally scaling equivalent $\exp(0.3088) \approx 1.36$.
-Interpretation confirms equivalently structurally meaning predicted parameter bounding paths multiplicatively natively functionally expand daily structures actively mathematically exactly explicitly $36\%$ every tracked individual sequential cycle intrinsically validating exclusively.
+The fitted log-linear model is:
+$$\log(\text{cases}) = 2.843 + 0.3088 \times \text{day}$$
+This means cases multiply by $e^{0.3088} \approx 1.362$ each day, i.e.\ about 36\% daily growth in the early outbreak.
 
-\subsection{Problem 6.24: Quantifying High-Leverage Outliers and Disruption Properties}
+\subsection{Problem 6.24: Effect of a High-Leverage Outlier}
 \textbf{Solution:}
-Simulating elements checking $x \in (1,2,3,4,5)$, returning positive metrics evaluating equivalently to $r \approx 0.997$.
-Appending explicitly highly mapped isolated variables $(15, -10)$ radically restructures bounds measuring strictly globally limits shifting natively intrinsically identical evaluating mapping perfectly returned properties evaluating to strong explicitly limits bounding fundamentally returning $\mathbf{-0.856}$.
+Starting with five points around a clear positive trend, the correlation is $r \approx 0.997$. When the extreme point $(15, -10)$ is added:
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.45\textwidth]{Linear_prob4_outlier.pdf}
 \end{figure}
-This demonstrates inherently quantitative boundaries maximizing elements functionally validating outlier scaling principles natively establishing values existing mapping heavily physically exclusively fundamentally extracting maximum numerical offsets (leverage bounds interacting with heavily inverted residual patterns) disrupting completely linear arrays natively explicitly modifying identical models severely negatively disrupting patterns globally strictly identifying robust properties scaling linearly bounding. 
+
+The correlation flips to $r \approx -0.856$. The new point is far from the centre of the data (high leverage), and its $y$-value goes in completely the opposite direction from what the trend predicts, so it dominates the fit. Cook's distance for this point is many times larger than for any other observation, confirming it is the culprit.
 
 \subsection{Problem 6.25: Interactive Correlation Guessing}
 \textbf{Solution:}
 
-Using the interactive correlation guessing applet at \url{https://istats.shinyapps.io/guesscorr/}, ten scatter plots were presented and guesses were entered for each. The results are summarised in the table below:
+I used the correlation guessing applet at \url{https://istats.shinyapps.io/guesscorr/}. Ten scatter plots were shown one at a time and I entered a guess for each correlation before seeing the answer.
 
 \begin{table}[H]
 \centering
 \begin{tabular}{c c c}
 \toprule
-\textbf{Plot} & \textbf{Guess} & \textbf{Actual} \\
+\textbf{Plot} & \textbf{My Guess} & \textbf{Actual} \\
 \midrule
 1  &  0.70  &  0.360  \\
 2  & -0.05  & -0.102  \\
@@ -492,19 +422,17 @@ Using the interactive correlation guessing applet at \url{https://istats.shinyap
 10 &  0.06  &  0.076  \\
 \bottomrule
 \end{tabular}
-\caption{Guessed vs.\ Actual Correlations from the Interactive Applet}
+\caption{My guesses vs the actual correlation values from the applet}
 \end{table}
 
-The correlation between the guessed values and the actual correlation values is $\mathbf{r = 0.9781}$, indicating a very high level of accuracy in estimating correlation from a scatter plot. This strong agreement reflects the direct visual relationship between the spread and direction of points in a scatter plot and its underlying correlation coefficient.
+The correlation between my guesses and the actual values is $r = 0.9781$. Most guesses were quite close, especially for the strongly positive and negative plots (4, 3, 7). The tricky ones were the near-zero correlations like Plot 1, where I overestimated -- it is harder to visually distinguish a correlation of 0.36 from 0.6 when the cloud is fairly tight.
 
-\subsection{Problem 6.30: Invariance of Correlation Across Linear Scalars}
+\subsection{Problem 6.30: Invariance of Correlation to Linear Scaling}
 \textbf{Solution:}
-Let regression vectors quantitatively mapping limits scale values scaling variable frameworks intrinsically transforming $y_{new} = {cy}$. 
-Variances shift dynamically scaling structures identical extracting mathematical quadratic forms: $s_{new} = \sqrt{c^2 s_y^2} = |c| s_y$.
-Covariances similarly parsing arrays functionally shift strictly identically extracting scalars structurally linearly $cov(x, cy) = c \cdot cov(x,y)$.
-Consequently, estimating beta parameter sequences identical strictly fundamentally extracting identically bounding metrics:
-$\hat{\beta}_{new} = cov_{new}/s_x^2 = c \hat{\beta}_1$.
-Calculating mapped parameters calculating correlation coefficients explicitly evaluating structurally arrays inherently bounding parsing mathematically evaluates identities inherently mathematically generating forms identical exclusively extracting explicitly equivalently $r_{new} = \hat{\beta}_{new} (s_x/s_{new}) = c \hat{\beta}_1 (s_x / c s_y) = \hat{\beta}_1 (s_x / s_y) = r$.
-Correlation properties explicitly globally inherently remain completely unaffected utilizing identically scaling tracking invariant elements validating naturally. 
+If we replace $y$ with $y' = cy$ for some constant $c \ne 0$:
+$$s_{y'} = |c| s_y, \quad \text{cov}(x, y') = c \cdot \text{cov}(x, y), \quad \hat{\beta}'_1 = c\hat{\beta}_1$$
+So the correlation:
+$$r' = \hat{\beta}'_1 \cdot \frac{s_x}{s_{y'}} = c\hat{\beta}_1 \cdot \frac{s_x}{|c|s_y} = \pm \hat{\beta}_1 \cdot \frac{s_x}{s_y} = \pm r$$
+The sign reverses only if $c < 0$ (reflecting the axis), otherwise $r$ is completely unchanged. This is why the unit of measurement of $y$ does not matter when computing a correlation coefficient.
 
 \end{document}
