@@ -273,30 +273,43 @@ $$SE(\hat{\pi}) \approx \frac{1}{\sqrt{I_n(\hat{\pi})}} = \sqrt{\frac{\hat{\pi}(
 Assuming large enough $n$, MLE distributions normally approximate. Thus, a (Wald-type) 95\% confidence interval leverages $Z \approx 1.96$:
 $$CI_{95\%} = \hat{\pi} \pm 1.96 \times SE(\hat{\pi}) = \hat{\pi} \pm 1.96 \sqrt{\frac{\hat{\pi}(1-\hat{\pi})}{2n}}$$
 
-\subsection{Problem 4.50: Simulation of Confidence Intervals ($p=0.06, n=20$)}
+\subsection{Problem 4.50: Simulation of Confidence Intervals ($p=0.06, n=20$) -- Interactive Applet}
 \textbf{Solution:}
 
-a) n = 20 and 10 samples for p = 0.06
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{img-072.png}
-    \caption{Coverage simulation for n=20, p=0.06, 10 samples}
-\end{figure}
-We expect the coverage to be atleast 95\% but here it's only 75\%.
-Even then we draw 1000 samples the coverage is not 95\%. Only 71\% contains pi = 0.06.
-This is because when n is small the normal approximation fails. For binomial to be treated as normal n should be large.
+Using the interactive applet at \url{https://istats.shinyapps.io/ExploreCoverage/} with parameters $p = 0.06$, $n = 20$, and a 95\% confidence level:
 
-b) when n = 20 drawing 10,000 samples gives the sampling distribution as below
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{img-073.png}
-    \caption{Sampling distribution for n=20, 10,000 samples}
-\end{figure}
-The sampling distribution is bell shaped and symmetric. Here the Wald confidence interval performs poorly because n is small and the distribution is highly discrete and thus cannot be approximated to normal which is continuous if we increase the value of n, the sampling distribution kinda becomes continuous.
+\textbf{(a) Wald CI -- 10 samples ($n=20$, $p=0.06$):}
 
-c) Wald confidence interval is given by putting $y$ as 0 we get the CI as $(0,0)$. As $p$ approaches 0 it means that the number of successes $X$ will also approach zero. therefore $\hat{p}$ which is $X/n$ will be approaching 0 with probability 1 and thus the actual probability that the Wald interval contains $p$ approaches 0 because the CI becomes $(0,0)$ and Since this interval never contains a positive $p$, the probability of the interval containing the true value drops to zero.
+After drawing 10 samples of size $n=20$ using the Large Sample (Wald) interval method, the applet reported:
+\begin{itemize}
+    \item After 20 simulations: 15 intervals cover, 5 do not cover.
+    \item \textbf{Observed coverage: 75.0\%} (25.0\% do not cover)
+\end{itemize}
+We expect coverage to be at least 95\%, but here it is only 75\%. This is because when $n$ is small and $p$ is close to 0, the normal approximation to the binomial fails. For binomial to be treated as approximately normal, $n$ must be large.
 
-d) using Wilson's score interval we see that the coverage is 97.5\% for 95\% CI. It supports our interpretation of CI 95\% that is if we draw 1000 samples and we get 1000 values of CI's, our true parameter will lie in at least 950 of the intervals.
+\textbf{(b) Wald CI -- 1000 samples ($n=20$, $p=0.06$):}
+
+After drawing 1000 samples of size $n=20$ using the Wald interval method:
+\begin{itemize}
+    \item After 1000 simulations: 711 intervals cover, 289 do not.
+    \item \textbf{Observed coverage: 71.1\%} (28.9\% do not cover)
+\end{itemize}
+Even with 1000 samples, the Wald coverage is far below the nominal 95\%. The sampling distribution of $\hat{p}$ for small $n$ and small $p$ is highly discrete and skewed -- it cannot be approximated well by a normal distribution. The Wald interval fails systematically in this regime.
+
+\textbf{(c) Degenerate Wald CI when $\hat{p} = 0$:}
+
+When $Y = 0$ successes, $\hat{p} = 0$. The Wald CI formula gives:
+$$\hat{p} \pm z \sqrt{\frac{\hat{p}(1-\hat{p})}{n}} = 0 \pm z\sqrt{0} = (0, 0)$$
+Since the true $p = 0.06 > 0$, this degenerate interval $(0,0)$ never captures the true value. As $p \to 0$, the probability of observing $Y=0$ approaches 1, so the Wald interval systematically collapses to $(0,0)$ and coverage drops to 0.
+
+\textbf{(d) Wilson Score CI -- 1000 samples ($n=20$, $p=0.06$):}
+
+Switching the method to Wilson Score in the applet with the same parameters:
+\begin{itemize}
+    \item After 1000 simulations: 975 intervals cover, 25 do not.
+    \item \textbf{Observed coverage: 97.5\%} (2.5\% do not cover)
+\end{itemize}
+The Wilson score interval dramatically restores coverage near the nominal 95\%, validating that if we draw 1000 samples and construct 1000 confidence intervals, the true parameter $p$ will lie in approximately 950 or more of them.
 
 
 \newpage
@@ -459,13 +472,30 @@ This demonstrates inherently quantitative boundaries maximizing elements functio
 \subsection{Problem 6.25: Interactive Correlation Guessing}
 \textbf{Solution:}
 
-Q)6.25
-The correlation obtained is 0.9781 (i am a good guesser :) )
+Using the interactive correlation guessing applet at \url{https://istats.shinyapps.io/guesscorr/}, ten scatter plots were presented and guesses were entered for each. The results are summarised in the table below:
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{img-006.png}
-\end{figure}
+\begin{table}[H]
+\centering
+\begin{tabular}{c c c}
+\toprule
+\textbf{Plot} & \textbf{Guess} & \textbf{Actual} \\
+\midrule
+1  &  0.70  &  0.360  \\
+2  & -0.05  & -0.102  \\
+3  & -0.70  & -0.835  \\
+4  &  0.97  &  0.992  \\
+5  &  0.07  &  0.078  \\
+6  &  0.12  &  0.205  \\
+7  & -0.80  & -0.765  \\
+8  & -0.40  & -0.383  \\
+9  & -0.60  & -0.649  \\
+10 &  0.06  &  0.076  \\
+\bottomrule
+\end{tabular}
+\caption{Guessed vs.\ Actual Correlations from the Interactive Applet}
+\end{table}
+
+The correlation between the guessed values and the actual correlation values is $\mathbf{r = 0.9781}$, indicating a very high level of accuracy in estimating correlation from a scatter plot. This strong agreement reflects the direct visual relationship between the spread and direction of points in a scatter plot and its underlying correlation coefficient.
 
 \subsection{Problem 6.30: Invariance of Correlation Across Linear Scalars}
 \textbf{Solution:}
